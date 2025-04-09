@@ -1,0 +1,45 @@
+name: Step 1 - Deploy AKS Cluster
+
+on:
+  workflow_dispatch:
+
+env:
+  RESOURCE_GROUP: rg-aks-automatic
+  LOCATION: westus3
+  CLUSTER_NAME: pvt-aks-h100
+  TEMPLATE_FILE: main.bicep
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure with federated identity (User Assigned Managed Identity)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create resource group if it doesn’t exist
+        run: |
+          az group create --name "${{ env.RESOURCE_GROUP }}" --location "${{ env.LOCATION }}"
+
+      - name: Deploy Bicep Template
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deployment
+          operation: create
+          name: aks-deployment
+          scope: resourceGroup
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          template-file: ${{ env.TEMPLATE_FILE }}
+          resource-group-name: ${{ env.RESOURCE_GROUP }}
+          parameters: '{"clusterName":"${{ env.CLUSTER_NAME }}","location":"${{ env.LOCATION }}"}"}'
