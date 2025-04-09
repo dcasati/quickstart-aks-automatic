@@ -42,4 +42,4 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template-file: ${{ env.TEMPLATE_FILE }}
           resource-group-name: ${{ env.RESOURCE_GROUP }}
-          parameters: '{"clusterName":"${{ env.CLUSTER_NAME }}","location":"${{ env.LOCATION }}"}"}'
+          parameters: '{"clusterName":"${{ env.CLUSTER_NAME }}","location":"${{ env.LOCATION }}"}'
