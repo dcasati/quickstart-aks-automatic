@@ -6,7 +6,7 @@ on:
 env:
   RESOURCE_GROUP: rg-aks-automatic
   LOCATION: westus3
-  CLUSTER_NAME: pvt-aks-h100
+  CLUSTER_NAME: aks-automatic
   TEMPLATE_FILE: main.bicep
 
 jobs:
