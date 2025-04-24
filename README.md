@@ -51,7 +51,7 @@ MY_USERNAME=admin@contoso.onmicrosoft.com
 
 ```bash
 az role assignment create \
-  --assignee "${MY_USER_NAME}$" \
+  --assignee "${MY_USERNAME}" \
   --role "Azure Kubernetes Service RBAC Cluster Admin" \
   --scope "$CLUSTER_ID"
 ```
@@ -60,7 +60,7 @@ az role assignment create \
 
 ```bash
 az role assignment create \
-  --assignee "${MY_USER_NAME}" \
+  --assignee "${MY_USERNAME}" \
   --role "Azure Kubernetes Service Cluster User" \
   --scope "$CLUSTER_ID"
 ```
