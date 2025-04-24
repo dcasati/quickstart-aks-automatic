@@ -41,20 +41,29 @@ az deployment group create \
 ## Connecto to the cluster
 
 ### 1. Get the AKS cluster resource ID
+
+```bash
 CLUSTER_ID=$(az aks show -g rg-aks-automatic -n aks-automatic --query id -o tsv)
 MY_USERNAME=admin@contoso.onmicrosoft.com
+```
 
 ### 2. Assign Kubernetes Cluster Admin RBAC Role
+
+```bash
 az role assignment create \
   --assignee "${MY_USER_NAME}$" \
   --role "Azure Kubernetes Service RBAC Cluster Admin" \
   --scope "$CLUSTER_ID"
+```
 
 ### 3. Assign Cluster User Role (to get kubeconfig)
+
+```bash
 az role assignment create \
   --assignee "${MY_USER_NAME}" \
   --role "Azure Kubernetes Service Cluster User" \
   --scope "$CLUSTER_ID"
+```
 
 Get the cluster credentials
 
