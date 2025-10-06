@@ -56,15 +56,6 @@ az role assignment create \
   --scope "$CLUSTER_ID"
 ```
 
-### 3. Assign Cluster User Role (to get kubeconfig)
-
-```bash
-az role assignment create \
-  --assignee "${MY_USERNAME}" \
-  --role "Azure Kubernetes Service Cluster User" \
-  --scope "$CLUSTER_ID"
-```
-
 Get the cluster credentials
 
 ```bash
