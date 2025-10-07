@@ -51,6 +51,7 @@
         "description": "Name of the User Assigned Managed Identity for the application"
       }
     },
+    
     "acrName": {
       "type": "string",
       "defaultValue": "petclinicacr",
@@ -71,6 +72,9 @@
         "description": "Tags to apply to all resources"
       }
     }
+  },
+  "variables": {
+    "postgresServerNameFull": "[concat(parameters('postgresServerName'), '-', substring(uniqueString(resourceGroup().id, subscription().subscriptionId, deployment().name), 0, 12))]"
   },
   "resources": [
     {
@@ -96,7 +100,7 @@
     {
       "type": "Microsoft.DBforPostgreSQL/flexibleServers",
       "apiVersion": "2024-08-01",
-      "name": "[format('{0}-{1}', parameters('postgresServerName'), substring(uniqueString(resourceGroup().id, subscription().subscriptionId, deployment().name), 0, 10))]",
+      "name": "[variables('postgresServerNameFull')]",
       "location": "[parameters('location')]",
       "sku": {
         "name": "Standard_B1ms",
@@ -123,13 +127,13 @@
     {
       "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
       "apiVersion": "2024-08-01",
-      "name": "[format('{0}/{1}', format('{0}-{1}', parameters('postgresServerName'), substring(uniqueString(resourceGroup().id, subscription().subscriptionId, deployment().name), 0, 10)), parameters('postgresDatabaseName'))]",
+      "name": "[format('{0}/{1}', variables('postgresServerNameFull'), parameters('postgresDatabaseName'))]",
       "properties": {
         "charset": "UTF8",
         "collation": "en_US.utf8"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', format('{0}-{1}', parameters('postgresServerName'), substring(uniqueString(resourceGroup().id, subscription().subscriptionId, deployment().name), 0, 10)))]"
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', variables('postgresServerNameFull'))]"
       ]
     },
     {
@@ -279,15 +283,15 @@
     },
     "postgresServerFQDN": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.DBforPostgreSQL/flexibleServers', format('{0}-{1}', parameters('postgresServerName'), substring(uniqueString(resourceGroup().id, subscription().subscriptionId, deployment().name), 0, 10))), '2024-08-01').fullyQualifiedDomainName]"
+      "value": "[reference(resourceId('Microsoft.DBforPostgreSQL/flexibleServers', variables('postgresServerNameFull')), '2024-08-01').fullyQualifiedDomainName]"
     },
     "postgresServerName": {
       "type": "string",
-      "value": "[format('{0}-{1}', parameters('postgresServerName'), substring(uniqueString(resourceGroup().id, subscription().subscriptionId, deployment().name), 0, 10))]"
+      "value": "[variables('postgresServerNameFull')]"
     },
     "postgresDatabaseResourceId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers/databases', format('{0}-{1}', parameters('postgresServerName'), substring(uniqueString(resourceGroup().id, subscription().subscriptionId, deployment().name), 0, 10)), parameters('postgresDatabaseName'))]"
+      "value": "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers/databases', variables('postgresServerNameFull'), parameters('postgresDatabaseName'))]"
     },
     "acrName": {
       "type": "string",
