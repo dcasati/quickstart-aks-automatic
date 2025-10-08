@@ -231,7 +231,7 @@
       "name": "[guid(resourceId('Microsoft.ContainerService/managedClusters', format('{0}-{1}', parameters('aksClusterName'), uniqueString(resourceGroup().id))), resourceId('Microsoft.ContainerRegistry/registries', format('{0}{1}', parameters('acrName'), uniqueString(resourceGroup().id))), 'AcrPull')]",
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')]",
-        "principalId": "[reference(resourceId('Microsoft.ContainerService/managedClusters', format('{0}-{1}', parameters('aksClusterName'), uniqueString(resourceGroup().id))), '2025-05-01').identityProfile.kubeletidentity.objectId]",
+        "principalId": "[reference(resourceId('Microsoft.ContainerService/managedClusters', format('{0}-{1}', parameters('aksClusterName'), uniqueString(resourceGroup().id))), '2025-07-01').identityProfile.kubeletidentity.objectId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
